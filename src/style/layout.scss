@@ -2,16 +2,39 @@
   min-height: 100vh;
 }
 
-.logo {
-  height: 60px;
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-  font-size: 18px;
+/* ===== SIDEBAR ===== */
+.app-sider {
+  transition: all 0.25s ease;
 }
 
+.sider-header {
+  height: 60px;
+  padding: 0 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.close-sider-btn {
+  color: #fff;
+  font-size: 18px;
+  transition: transform 0.2s ease, background 0.2s ease;
+  cursor: pointer;
+
+  &:hover {
+    transform: translateX(-2px);
+    background: rgba(255, 255, 255, 0.15);
+  }
+}
+
+/* ===== LOGO ===== */
+.logo {
+  color: white;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+/* ===== HEADER ===== */
 .header-bar {
   background: white;
   padding: 0 24px;
@@ -19,8 +42,31 @@
   justify-content: space-between;
   align-items: center;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+
+  .left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .header-title {
+    font-size: 16px;
+    font-weight: 500;
+    white-space: nowrap;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+
+  /* 👉 Khi sidebar mở thì ẩn chữ */
+  &.sidebar-open {
+    .header-title {
+      opacity: 0;
+      transform: translateX(-8px);
+      pointer-events: none;
+    }
+  }
 }
 
+/* ===== CONTENT ===== */
 .main-content {
   padding: 24px;
 }
