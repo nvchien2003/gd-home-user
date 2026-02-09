@@ -1,11 +1,10 @@
-import HeaderLayout from './component/Header'
+import MainLayout from "./component/layout/MainLayout"
+
 
 function App() {
   return (
     <>
-    <div className="min-h-screen ">
-      <HeaderLayout/>
-    </div>
+      <MainLayout/>
     </>
   )
 }
