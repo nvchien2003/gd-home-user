@@ -1,0 +1,19 @@
+<!-- Inline SVG: có thể dùng trong HTML hoặc JSX -->
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  width="32"
+  height="32"
+  aria-hidden="true"
+  role="img"
+>
+  <title>Home Work</title>
+  <g fill="currentColor">
+    <!-- house -->
+    <path d="M12 3.3 3 10v8.7a.7.7 0 0 0 .7.7H9v-6h6v6h5.3a.7.7 0 0 0 .7-.7V10L12 3.3z"/>
+    <!-- small building to the right -->
+    <path d="M17 13h-1V9h-3v4h-1v6h5v-6z"/>
+    <!-- windows on building -->
+    <path d="M14.5 10.5h.75v.75h-.75zM16.5 10.5h.75v.75h-.75zM14.5 12.5h.75v.75h-.75zM16.5 12.5h.75v.75h-.75z" />
+  </g>
+</svg>
