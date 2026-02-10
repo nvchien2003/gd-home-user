@@ -7,6 +7,7 @@ const { Content } = Layout;
 
 export default function MainLayout() {
   const [collapsed, setCollapsed] = useState(false);
+  console.log(import.meta.env.BE_URL);
 
   return (
     <Layout className="main-layout">
