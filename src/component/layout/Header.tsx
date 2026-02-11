@@ -79,7 +79,7 @@ export default function HeaderBar({
       <div className="right">
         <Dropdown menu={{ items }} placement="bottomRight" trigger={["click"]}>
           <div className="avatar-wrap">
-            <Avatar size="large">U</Avatar>
+            <Avatar style={{width: 32, height: 32}} size="large">U</Avatar>
           </div>
         </Dropdown>
       </div>

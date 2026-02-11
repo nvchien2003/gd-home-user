@@ -3,7 +3,7 @@ import {
   DashboardOutlined,
   HomeOutlined,
   SettingOutlined,
-  MenuFoldOutlined,
+  CloseCircleOutlined,
 } from "@ant-design/icons";
 
 const { Sider } = Layout;
@@ -27,9 +27,8 @@ export default function Sidebar({
         <div className="logo">GD HOME</div>
 
         <Button
-          type="text"
           className="close-sider-btn"
-          icon={<MenuFoldOutlined />}
+          icon={<CloseCircleOutlined />}
           onClick={onClose}
         />
       </div>

@@ -1,0 +1,67 @@
+.signin-wrapper {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #1677ff, #69b1ff);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.signin-card {
+  width: 380px;
+  background: #fff;
+  padding: 32px 28px;
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+}
+
+.signin-row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.signin-title {
+  text-align: center;
+}
+
+.signin-subtitle {
+  display: block;
+  text-align: center;
+}
+
+
+@media (max-width: $mobile) {
+  .signin-wrapper {
+    padding: 16px;
+  }
+
+  .signin-card {
+    width: 100%;
+    max-width: 360px;
+    padding: 22px 18px;
+    border-radius: 10px;
+  }
+
+  .signin-title {
+    font-size: 18px;
+  }
+
+  .signin-subtitle {
+    font-size: 13px;
+  }
+
+  .signin-row {
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-start;
+  }
+
+  .input {
+    height: 44px;
+    border-radius: 20px;
+  }
+
+  .ant-btn {
+    height: 44px;
+    border-radius: 22px;
+  }
+}

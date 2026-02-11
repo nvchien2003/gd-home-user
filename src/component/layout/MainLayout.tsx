@@ -2,6 +2,7 @@ import { Layout } from "antd";
 import { useState } from "react";
 import Sidebar from "./Sidebar";
 import HeaderBar from "./Header";
+import { Outlet } from "react-router-dom";
 
 const { Content } = Layout;
 
@@ -20,9 +21,7 @@ export default function MainLayout() {
         />
 
         <Content className="main-content">
-          <div className="page-container">
-            Content hiển thị ở đây 🚀
-          </div>
+             <Outlet/>
         </Content>
       </Layout>
     </Layout>
