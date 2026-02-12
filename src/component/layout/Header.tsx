@@ -92,11 +92,11 @@ export default function HeaderBar({
                   <button className="flex items-center gap-2">
                     <img
                       src={user?.avatar}
-                      alt={user?.name}
+                      alt={user?.firstName}
                       className="h-9 w-9 rounded-full border"
                     />
                     <span className="text-sm font-medium text-gray-700">
-                      {user?.name}
+                      {`${user?.firstName} ${user?.lastName}`}
                     </span>
                   </button>
 

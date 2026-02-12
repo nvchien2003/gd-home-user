@@ -16,10 +16,10 @@ export default function HistoryPage() {
           <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
             <div className="p-6 border-b border-gray-100 flex flex-col items-center text-center">
               <div className="w-20 h-20 rounded-full bg-gray-200 mb-4 overflow-hidden">
-                <img src={user?.avatar} alt={user?.name} className="w-full h-full object-cover" />
+                <img src={user?.avatar} alt={user?.firstName} className="w-full h-full object-cover" />
               </div>
-              <h3 className="font-bold text-gray-900">{user?.name}</h3>
-              <p className="text-sm text-gray-500">{user?.email}</p>
+              <h3 className="font-bold text-gray-900">{user?.firstName}</h3>
+              <p className="text-sm text-gray-500">{user?.firstName}</p>
             </div>
             
             <nav className="p-2">
