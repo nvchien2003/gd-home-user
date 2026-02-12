@@ -46,7 +46,14 @@ export default function VerifyOtp() {
             name="otp"
             rules={[{ required: true, message: "Please enter OTP" }]}
           >
-            <Input.OTP length={6} size="large" />
+            <Input.OTP
+              length={6}
+              size="large"
+              inputMode="numeric"
+              autoFocus
+              formatter={(str) => str.replace(/\D/g, "")}
+            />
+
           </Form.Item>
 
           <Form.Item>

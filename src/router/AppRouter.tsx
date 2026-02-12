@@ -15,6 +15,7 @@ import HistoryPage from "../page/history";
 import { Favorites } from "../page/favorites";
 import { Rentals } from "../page/history/rental";
 import DashboardOverview from "../page/history/overview";
+import ResetPassword from "../page/auth/reset-pass";
 
 const router = createBrowserRouter([
     {
@@ -80,6 +81,10 @@ const router = createBrowserRouter([
     {
         path: '/verify-otp',
         element: <VerifyOtp />
+    },
+    {
+        path: '/reset-password',
+        element: <ResetPassword />
     }
 ]);
 
