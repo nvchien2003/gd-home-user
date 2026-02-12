@@ -14,6 +14,7 @@ import ProfilePage from "../page/profile";
 import HistoryPage from "../page/history";
 import { Favorites } from "../page/favorites";
 import { Rentals } from "../page/history/rental";
+import DashboardOverview from "../page/history/overview";
 
 const router = createBrowserRouter([
     {
@@ -46,7 +47,13 @@ const router = createBrowserRouter([
             },
             {
                 path: '/history',
-                element: <HistoryPage />
+                element: <HistoryPage />,
+                children: [
+                    {
+                        index: true,
+                        element: <DashboardOverview />
+                    }
+                ]
             },
             {
                 path: '/favorites',
