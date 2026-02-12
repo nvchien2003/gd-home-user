@@ -1,6 +1,5 @@
+@import 'tailwindcss' source(none);
 
-/* custom tailwind */
-@import './custom/index.css';
-@import './custom/header.css';
+@source '../**/*.{js,ts,jsx,tsx}';
 
-
+@import 'tw-animate-css';
