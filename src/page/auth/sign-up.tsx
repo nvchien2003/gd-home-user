@@ -2,6 +2,8 @@ import { Button, Form, Typography, message } from 'antd';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import CustomInput from '../../component/Input';
+import type { SignUpInterface } from '../../api/auth/auth.interface';
+import { authApi } from '../../api/auth/auth.api';
 
 const { Title, Text } = Typography;
 
@@ -13,7 +15,13 @@ export default function SignUp() {
         try {
             setLoading(true);
             console.log(values);
-            // TODO: call api register
+            const payload: SignUpInterface = {
+                firstName: values.firstName,
+                lastName: values.lastName,
+                email: values.email,
+                password: values.password,
+            }
+            await authApi.signUpApi(payload);
             message.success('Register successfully!');
             navigate('/sign-in');
         } catch (err) {
@@ -31,13 +39,25 @@ export default function SignUp() {
                 </Title>
 
                 <Form layout="vertical" onFinish={onFinish} style={{ marginTop: 16 }}>
+                    <div className='flex justify-between gap-2'>
                     <CustomInput
-                        name="username"
-                        label="Username"
+                        name="firstName"
+                        label="First Name"
                         className='input'
-                        placeholder="Enter username"
-                        rules={[{ required: true, message: "Username is required" }]}
+                        placeholder="First Name"
+                        rules={[{ required: true, message: "First name is required" }]}
                     />
+
+                    <CustomInput
+                        name="lastName"
+                        label="Last Name"
+                        className='input'
+                        placeholder="Last Name"
+                        rules={[{ required: true, message: "Last name is required" }]}
+                    />
+
+                    </div>
+
 
                     <CustomInput
                         name="email"
