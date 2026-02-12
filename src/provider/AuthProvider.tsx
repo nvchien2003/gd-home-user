@@ -16,6 +16,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [token, setToken] = useState<string | null>(localStorage.getItem("token"));
 
   const login = (newToken: string, newUser: User) => {
+    if (!newToken) return;
     localStorage.setItem("token", newToken);
     setToken(newToken);
     setUser(newUser);
@@ -35,7 +36,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         token,
         login,
         logout,
-        isAuthenticated: !!token,
+        isAuthenticated: Boolean(token && token !== "undefined"),
       }}
     >
       {children}
