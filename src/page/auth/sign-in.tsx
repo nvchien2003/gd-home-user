@@ -18,7 +18,7 @@ export default function SignIn() {
       setLoading(true);
       const res = await authApi.loginApi(values);
       console.log(res);
-      login(res.data.access_token);
+      login(res.data.access_token, res.data.user);
       message.success('Login successfully!');
       navigate('/');
     } catch (err) {
@@ -36,7 +36,7 @@ export default function SignIn() {
         </Title>
 
         <Text type="secondary" className="signin-subtitle">
-          Sign in to continue to Admin Panel
+          Sign in to continue to GD Home
         </Text>
 
         <Form
@@ -94,7 +94,7 @@ export default function SignIn() {
         </Form>
 
         <Text className="signin-subtitle">
-          Don’t have an account? <a href="/register">Register</a>
+          Don’t have an account? <a href="/sign-up">Sign Up</a>
         </Text>
       </div>
     </div>

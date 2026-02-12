@@ -1,5 +1,6 @@
-@import './variables';
-@import "./layout";
+@use "./variables" as *;
+@import './tailwind.css';
+@import './theme.css';
 @import './project/sign-in';
 @import './components/input';
 

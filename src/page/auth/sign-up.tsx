@@ -5,7 +5,7 @@ import CustomInput from '../../component/Input';
 
 const { Title, Text } = Typography;
 
-export default function Register() {
+export default function SignUp() {
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
