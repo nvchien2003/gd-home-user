@@ -21,9 +21,14 @@ export default function SignUp() {
                 email: values.email,
                 password: values.password,
             }
-            await authApi.signUpApi(payload);
+            const res = await authApi.signUpApi(payload);
             message.success('Register successfully!');
-            navigate('/sign-in');
+            navigate('/verify-otp', {
+                state: {
+                    email: res.email,
+                    type: res.type,
+                },
+            });
         } catch (err) {
             message.error('Register failed!');
         } finally {

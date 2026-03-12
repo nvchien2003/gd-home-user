@@ -20,7 +20,7 @@ export default function HeaderBar({
   handleLogout,
 }: HeaderBarProps) {
   /* ================= CONFIG ================= */
-
+  console.log("----------user", user)
   const NAV_ITEMS = [
     { label: "Home", to: "/" },
     { label: "Explore", to: "/explore" },

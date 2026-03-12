@@ -1,23 +1,35 @@
 import { Button, Form, Input, Typography, message } from "antd";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { authApi } from "../../api/auth/auth.api";
 
 const { Title, Text } = Typography;
 
 export default function VerifyOtp() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+  const { email, type } = location.state;
 
   const onFinish = async (values: any) => {
     try {
       setLoading(true);
       console.log("OTP:", values.otp);
+      const payload = {
+        email,
+        code: values.otp,
+        type,
+      }
 
-      // TODO: call api verify otp
-      // await authApi.verifyOtp(values)
-
+      const res = await authApi.verifyOtp(payload)
       message.success("Verify OTP success!");
-      navigate("/reset-password");
+      if (type === 'RESET') {
+        navigate("/reset-password", {
+          state: { resetToken: res.resetToken}
+        });
+      } else {
+        navigate("/sign-in");
+      }
     } catch (err) {
       message.error("Invalid OTP!");
     } finally {

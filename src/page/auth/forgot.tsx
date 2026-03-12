@@ -3,6 +3,7 @@ import { MailOutlined } from '@ant-design/icons';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import CustomInput from '../../component/Input';
+import { authApi } from '../../api/auth/auth.api';
 
 const { Title, Text } = Typography;
 
@@ -14,9 +15,15 @@ export default function ForgotPassword() {
         try {
             setLoading(true);
             console.log(values);
-            // TODO: call api forgot password
+            const res = await authApi.forgotApi(values);
+            console.log('--------', res)
             message.success('Reset link sent to your email!');
-            navigate("/verify-otp");
+            navigate("/verify-otp", {
+                state: {
+                    email: res.email,
+                    type: res.type,
+                }
+            });
         } catch (err) {
             message.error('Failed to send reset email');
         } finally {

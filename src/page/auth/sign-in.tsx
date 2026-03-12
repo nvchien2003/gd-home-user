@@ -17,13 +17,6 @@ export default function SignIn() {
     try {
       setLoading(true);
       const res = await authApi.loginApi(values);
-      
-      if(res.data.user?.verify === false) {
-        message.warning('Please verify your email first!');
-        navigate('/verify-otp');
-        return;
-      }
-
       login(res.data.accessToken, res.data.user);
       message.success('Login successfully!');
       navigate('/');

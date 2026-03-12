@@ -1,7 +1,8 @@
 import { Button, Form, Typography, message } from "antd";
 import { useState } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import CustomInput from "../../component/Input";
+import { authApi } from "../../api/auth/auth.api";
 
 const { Title } = Typography;
 
@@ -10,12 +11,20 @@ export default function ResetPassword() {
   const navigate = useNavigate();
   const [params] = useSearchParams();
   const token = params.get("token");
+  const location = useLocation();
+  const { resetToken } = location.state;
 
   const onFinish = async (values: any) => {
     try {
       setLoading(true);
       console.log({ token, ...values });
+      const payload = {
+        resetToken,
+        newPass: values.password,
+        confirmPass: values.confirmPassword,
+      }
       // TODO: call api reset password
+      await authApi.resetApi(payload);
       message.success("Password reset successfully!");
       navigate("/sign-in");
     } catch (err) {
