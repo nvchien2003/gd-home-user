@@ -1,13 +1,17 @@
 import { Camera } from "lucide-react";
 import { useAuth } from "../../provider/AuthProvider";
-import { Spin, Upload, notification } from "antd";
+import { Form, Spin, Upload, notification } from "antd";
 import type { UploadProps } from "antd";
 import { usePreview } from "../../hook/medias.hook";
 import { UserApi } from "../../api/user/user.api";
 import { useLoading } from "../../hook/useLoading";
+import CustomInput from "../../component/Input";
+import { useEffect } from "react";
+
 
 export default function ProfilePage() {
   const { user } = useAuth();
+  const [form] = Form.useForm();
   const { loading, start, stop } = useLoading("profile");
   const { filePreview, onChangeFiles, onUpload } = usePreview(1);
   const uploadProps: UploadProps = {
@@ -29,26 +33,34 @@ export default function ProfilePage() {
   /**
    * save avatar
    */
+
+  useEffect(() => {
+    form.setFieldsValue({
+      firstName: user?.firstName,
+      lastName: user?.lastName,
+      email: user?.email,
+      phone: user?.phone,
+      location: user?.location,
+    })
+  }, [user])
+
   const handleSave = async () => {
     try {
       start();
       let avatarUrl = user?.avatar;
-
-      /**
-       * nếu có file mới thì upload
-       */
       if (filePreview?.length) {
         const uploadRes = await onUpload(filePreview);
 
         avatarUrl = uploadRes?.[0]?.url || uploadRes?.url;
       }
-
-      /**
-       * update profile
-       */
+      const values = form.getFieldsValue();
+      if (values?.email === user?.email) {
+        values.email = null;
+      }
       await UserApi.updateProfileApi({
         ...user,
         avatar: avatarUrl,
+        ...values,
       });
 
       notification.success({
@@ -63,8 +75,6 @@ export default function ProfilePage() {
       stop();
     }
   };
-  console.log(user);
-  console.log(user?.avatar);
 
   return (
     <div className="max-w-4xl mx-auto mt-8">
@@ -83,12 +93,13 @@ export default function ProfilePage() {
         <div className="p-6">
           <div className="flex items-center gap-6 mb-8">
             <div className="relative">
-              <img
-                src={filePreview?.at(-1)?.preview ?? user?.avatar}
-                alt={user?.firstName}
-                className="w-24 h-24 rounded-full object-cover"
-              />
-
+              <div className="w-24 h-24 rounded-full overflow-hidden bg-gray-100 flex items-center justify-center">
+                <img
+                  src={filePreview?.at(-1)?.preview ?? user?.avatar ?? "/image/avatar.png"}
+                  alt={user?.firstName}
+                  className="w-full h-full object-cover"
+                />
+              </div>
               <Upload {...uploadProps}>
                 <button
                   type="button"
@@ -106,64 +117,58 @@ export default function ProfilePage() {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <Form form={form} className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 First Name
               </label>
-
-              <input
+              <CustomInput
                 type="text"
-                defaultValue={`${user?.firstName}`}
+                name="firstName"
                 className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
               />
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Last Name
               </label>
-
-              <input
+              <CustomInput
+                name="lastName"
                 type="text"
-                defaultValue={`${user?.lastName}`}
                 className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
               />
             </div>
-
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Email Address
               </label>
-
-              <input
+              <CustomInput
+                name="email"
                 type="email"
-                defaultValue={user?.email}
                 className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
               />
             </div>
-
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Phone Number
               </label>
-
-              <input
+              <CustomInput
+                name="phone"
                 type="text"
                 placeholder="+1 (555) 000-0000"
                 className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
               />
             </div>
-
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Location
               </label>
-
-              <input
+              <CustomInput
+                name="location"
                 type="text"
                 placeholder="San Francisco, CA"
                 className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
               />
             </div>
-          </div>
+          </Form>
         </div>
       </div>
     </div>

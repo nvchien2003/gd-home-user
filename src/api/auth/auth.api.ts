@@ -26,5 +26,10 @@ export const authApi = {
     resetApi: async (payload: ResetPasswordInterface) => {
         const response = await axiosClient.post('/auth/reset-password', payload);
         return response.data;
+    },
+
+    getProfile: async() => {
+       const response = await axiosClient.get('/auth/profile');
+        return response.data;
     }
 }
