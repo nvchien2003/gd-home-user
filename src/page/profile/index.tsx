@@ -1,13 +1,14 @@
 import { Camera } from "lucide-react";
 import { useAuth } from "../../provider/AuthProvider";
-import { Upload, notification } from "antd";
+import { Spin, Upload, notification } from "antd";
 import type { UploadProps } from "antd";
 import { usePreview } from "../../hook/medias.hook";
 import { UserApi } from "../../api/user/user.api";
+import { useState } from "react";
 
 export default function ProfilePage() {
   const { user } = useAuth();
-
+  const [loading, setLoading] = useState(false);
   const { filePreview, onChangeFiles, onUpload } = usePreview(1);
   const uploadProps: UploadProps = {
     showUploadList: false,
@@ -30,6 +31,7 @@ export default function ProfilePage() {
    */
   const handleSave = async () => {
     try {
+      setLoading(true);
       let avatarUrl = user?.avatar;
 
       /**
@@ -57,6 +59,8 @@ export default function ProfilePage() {
       notification.error({
         message: "Update profile failed",
       });
+    } finally {
+      setLoading(false);
     }
   };
   console.log(user);
@@ -72,7 +76,7 @@ export default function ProfilePage() {
             onClick={handleSave}
             className="text-sm font-medium text-indigo-600 hover:text-indigo-700"
           >
-            Save Changes
+            {loading ? <Spin size="large" /> : "Save Changes"}
           </button>
         </div>
 
