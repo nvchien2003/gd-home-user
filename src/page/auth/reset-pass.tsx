@@ -1,5 +1,4 @@
 import { Button, Form, Typography, message } from "antd";
-import { useState } from "react";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import CustomInput from "../../component/Input";
 import { authApi } from "../../api/auth/auth.api";
