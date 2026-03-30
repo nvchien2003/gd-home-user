@@ -1,21 +1,21 @@
 import { Button, Form, Checkbox, Typography, message } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { authApi } from '../../api/auth/auth.api';
 import { useAuth } from '../../provider/AuthProvider';
 import CustomInput from '../../component/Input';
+import { useLoading } from '../../hook/useLoading';
 
 const { Title, Text } = Typography;
 
 export default function SignIn() {
-  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { login } = useAuth();
+  const { loading, start, stop } = useLoading("sign-in");
 
   const onFinish = async (values: any) => {
     try {
-      setLoading(true);
+      start();
       const res = await authApi.loginApi(values);
       login(res.data.accessToken, res.data.user);
       message.success('Login successfully!');
@@ -23,7 +23,7 @@ export default function SignIn() {
     } catch (err) {
       message.error('Login failed!');
     } finally {
-      setLoading(false);
+      stop();
     }
   };
 

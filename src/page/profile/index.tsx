@@ -4,11 +4,11 @@ import { Spin, Upload, notification } from "antd";
 import type { UploadProps } from "antd";
 import { usePreview } from "../../hook/medias.hook";
 import { UserApi } from "../../api/user/user.api";
-import { useState } from "react";
+import { useLoading } from "../../hook/useLoading";
 
 export default function ProfilePage() {
   const { user } = useAuth();
-  const [loading, setLoading] = useState(false);
+  const { loading, start, stop } = useLoading("profile");
   const { filePreview, onChangeFiles, onUpload } = usePreview(1);
   const uploadProps: UploadProps = {
     showUploadList: false,
@@ -31,7 +31,7 @@ export default function ProfilePage() {
    */
   const handleSave = async () => {
     try {
-      setLoading(true);
+      start();
       let avatarUrl = user?.avatar;
 
       /**
@@ -60,7 +60,7 @@ export default function ProfilePage() {
         message: "Update profile failed",
       });
     } finally {
-      setLoading(false);
+      stop();
     }
   };
   console.log(user);

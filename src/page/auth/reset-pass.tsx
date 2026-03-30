@@ -3,11 +3,12 @@ import { useState } from "react";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import CustomInput from "../../component/Input";
 import { authApi } from "../../api/auth/auth.api";
+import { useLoading } from "../../hook/useLoading";
 
 const { Title } = Typography;
 
 export default function ResetPassword() {
-  const [loading, setLoading] = useState(false);
+    const { loading, start, stop } = useLoading("reset-password");
   const navigate = useNavigate();
   const [params] = useSearchParams();
   const token = params.get("token");
@@ -16,7 +17,7 @@ export default function ResetPassword() {
 
   const onFinish = async (values: any) => {
     try {
-      setLoading(true);
+      start();
       console.log({ token, ...values });
       const payload = {
         resetToken,
@@ -30,7 +31,7 @@ export default function ResetPassword() {
     } catch (err) {
       message.error("Reset failed!");
     } finally {
-      setLoading(false);
+      stop();
     }
   };
 
