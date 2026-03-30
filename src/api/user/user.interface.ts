@@ -7,3 +7,10 @@ export interface User {
     role: 'user' | 'admin';
     verify: boolean;
 }
+
+export interface UserProfile {
+    firstName?: string;
+    lastName?: string;
+    email?: string;
+    avatar?: string;
+}
