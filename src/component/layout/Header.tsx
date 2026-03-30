@@ -20,7 +20,6 @@ export default function HeaderBar({
   handleLogout,
 }: HeaderBarProps) {
   /* ================= CONFIG ================= */
-  console.log("----------user", user)
   const NAV_ITEMS = [
     { label: "Home", to: "/" },
     { label: "Explore", to: "/explore" },
@@ -90,11 +89,13 @@ export default function HeaderBar({
                 {/* Avatar Dropdown */}
                 <div className="relative group">
                   <button className="flex items-center gap-2">
-                    <img
+                    <div className="w-9 h-9 rounded-full overflow-hidden justify-center items-center flex border">
+                      <img
                       src={user?.avatar}
                       alt={user?.firstName}
-                      className="h-9 w-9 rounded-full border"
+                      className="h-full w-full rounded-full"
                     />
+                    </div>
                     <span className="text-sm font-medium text-gray-700">
                       {`${user?.firstName} ${user?.lastName}`}
                     </span>

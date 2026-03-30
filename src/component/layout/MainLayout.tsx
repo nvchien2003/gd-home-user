@@ -5,7 +5,7 @@ import { Footer } from './Footer';
 import HeaderBar from './Header';
 
 export default function MainLayout() {
-  const { isAuthenticated, user, logout } = useAuth();
+  const { isAuthenticated, user, logout} = useAuth();
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const location = useLocation();
   const navigate = useNavigate();

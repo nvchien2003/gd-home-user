@@ -10,7 +10,7 @@ import { useEffect } from "react";
 
 
 export default function ProfilePage() {
-  const { user } = useAuth();
+  const { user, refetch } = useAuth();
   const [form] = Form.useForm();
   const { loading, start, stop } = useLoading("profile");
   const { filePreview, onChangeFiles, onUpload } = usePreview(1);
@@ -73,6 +73,7 @@ export default function ProfilePage() {
       });
     } finally {
       stop();
+      refetch();
     }
   };
 
