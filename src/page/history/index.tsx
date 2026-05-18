@@ -1,7 +1,7 @@
 
 
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
-import { Heart, Home, MessageSquare, Settings, LogOut } from 'lucide-react';
+import { Heart, Home, MessageSquare, Settings, LogOut, Plus } from 'lucide-react';
 import { useAuth } from '../../provider/auth.context';
 
 
@@ -50,6 +50,13 @@ export default function HistoryPage() {
               >
                 <Home className="h-5 w-5" />
                 My Rentals
+              </NavLink>
+              <NavLink
+                to="/create-rental"
+                className={({ isActive }) => `flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors ${isActive ? 'bg-indigo-50 text-indigo-600' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'}`}
+              >
+                <Plus className="h-5 w-5" />
+                Create Post
               </NavLink>
               <NavLink 
                 to="/chat" 

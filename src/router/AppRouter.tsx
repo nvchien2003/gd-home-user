@@ -17,6 +17,8 @@ import { Rentals } from "../page/history/rental";
 import DashboardOverview from "../page/history/overview";
 import ResetPassword from "../page/auth/reset-pass";
 import PrivateRoute from "./PrivateRouter";
+import SubscriptionRoute from "./SubscriptionRoute";
+import CreateRentalPage from "../page/create-rental";
 
 const router = createBrowserRouter([
     {
@@ -67,6 +69,15 @@ const router = createBrowserRouter([
                     {
                         path: '/rentals',
                         element: <Rentals />
+                    },
+                    {
+                        element: <SubscriptionRoute />,
+                        children: [
+                            {
+                                path: '/create-rental',
+                                element: <CreateRentalPage />
+                            }
+                        ]
                     }
                 ]
             }

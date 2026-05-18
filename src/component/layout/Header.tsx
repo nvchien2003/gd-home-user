@@ -1,6 +1,6 @@
 
 import { Link } from "react-router-dom";
-import { Home, Menu, X, MessageSquare, Heart } from "lucide-react";
+import { Home, Menu, X, MessageSquare, Heart, Plus } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import type { User } from "../../api/user/user.interface";
 
@@ -32,6 +32,7 @@ export default function HeaderBar({
   ];
 
   const MOBILE_AUTH_ITEMS = [
+    { label: "Create", to: "/create-rental" },
     { label: "Profile", to: "/profile" },
     { label: "History", to: "/history" },
     { label: "Messages", to: "/chat" },
@@ -70,8 +71,15 @@ export default function HeaderBar({
 
           {/* Desktop Auth */}
           <div className="hidden md:flex items-center gap-4">
-            {isAuthenticated ? (
+            {true ? (
               <div className="flex items-center gap-4">
+                <Link
+                  to="/create-rental"
+                  className="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg font-medium transition-colors"
+                >
+                  <Plus className="h-4 w-4" />
+                  <span>Create</span>
+                </Link>
 
                 {/* Messages */}
                 <Link to="/chat" className="p-2 text-gray-400 hover:text-indigo-600 relative">

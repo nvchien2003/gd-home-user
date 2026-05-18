@@ -13,7 +13,7 @@ const getBase64 = (file: File): Promise<string> =>
 
 export type FileUpload = { preview: string; file: File; id: string; uid: string };
 
-export const usePreview = (limit = 1) => {
+export const usePreview = (limit = 1, uploadType = 'avatar') => {
     const [filePreview, setFilePreview] = useState<FileUpload[]>([]);
 
     const onChangeFiles: UploadProps['onChange'] = async ({ fileList }) => {
@@ -54,7 +54,7 @@ export const usePreview = (limit = 1) => {
     const onUpload = async (fileUpload: FileUpload[]) => {
         if (fileUpload?.length) {
             const formDataUpload = new FormData();
-            formDataUpload.append('type', 'avatar');
+            formDataUpload.append('type', uploadType);
             fileUpload.forEach((file) => {
                 formDataUpload.append('file', file.file);
             });
