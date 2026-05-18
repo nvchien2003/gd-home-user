@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { type UploadProps } from 'antd';
 import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
@@ -12,7 +11,7 @@ const getBase64 = (file: File): Promise<string> =>
         reader.onerror = (error) => reject(error);
     });
 
-export type FileUpload = { preview: string; file?: File | string; id: string };
+export type FileUpload = { preview: string; file: File; id: string; uid: string };
 
 export const usePreview = (limit = 1) => {
     const [filePreview, setFilePreview] = useState<FileUpload[]>([]);
@@ -27,18 +26,19 @@ export const usePreview = (limit = 1) => {
                     preview: base64,
                     file: file.originFileObj as File,
                     id: uuidv4(),
+                    uid: file.uid,
                 };
             }),
         );
 
         setFilePreview((prev) => {
             const existingUuids = new Set(
-                prev?.map((item) => (item.file as any)?.uid),
+                prev?.map((item) => item.uid),
             );
             const merged = [
                 ...(prev ?? []),
                 ...newFiles.filter(
-                    (item) => !existingUuids.has((item.file as any)?.uid),
+                    (item) => !existingUuids.has(item.uid),
                 ),
             ];
             return limit > 1
@@ -56,10 +56,9 @@ export const usePreview = (limit = 1) => {
             const formDataUpload = new FormData();
             formDataUpload.append('type', 'avatar');
             fileUpload.forEach((file) => {
-                formDataUpload.append('file', file?.file as any);
+                formDataUpload.append('file', file.file);
             });
             const response = await MediaApi.fileUpload(formDataUpload);
-            console.log(response);
 
             return response;
         }

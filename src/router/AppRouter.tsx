@@ -16,6 +16,7 @@ import { Favorites } from "../page/favorites";
 import { Rentals } from "../page/history/rental";
 import DashboardOverview from "../page/history/overview";
 import ResetPassword from "../page/auth/reset-pass";
+import PrivateRoute from "./PrivateRouter";
 
 const router = createBrowserRouter([
     {
@@ -35,34 +36,39 @@ const router = createBrowserRouter([
                 element: <PropertyDetailPage />
             },
             {
-                path: '/booking',
-                element: <BookingPage />
-            },
-            {
-                path: '/chat',
-                element: <ChatPage />
-            },
-            {
-                path: '/profile',
-                element: <ProfilePage />
-            },
-            {
-                path: '/history',
-                element: <HistoryPage />,
+                element: <PrivateRoute />,
                 children: [
                     {
-                        index: true,
-                        element: <DashboardOverview />
+                        path: '/booking',
+                        element: <BookingPage />
+                    },
+                    {
+                        path: '/chat',
+                        element: <ChatPage />
+                    },
+                    {
+                        path: '/profile',
+                        element: <ProfilePage />
+                    },
+                    {
+                        path: '/history',
+                        element: <HistoryPage />,
+                        children: [
+                            {
+                                index: true,
+                                element: <DashboardOverview />
+                            }
+                        ]
+                    },
+                    {
+                        path: '/favorites',
+                        element: <Favorites />
+                    },
+                    {
+                        path: '/rentals',
+                        element: <Rentals />
                     }
                 ]
-            },
-            {
-                path: '/favorites',
-                element: <Favorites />
-            },
-            {
-                path: '/rentals',
-                element: <Rentals />
             }
         ]
     },

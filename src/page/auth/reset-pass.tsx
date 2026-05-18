@@ -1,24 +1,35 @@
 import { Button, Form, Typography, message } from "antd";
-import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import CustomInput from "../../component/Input";
 import { authApi } from "../../api/auth/auth.api";
 import { useLoading } from "../../hook/useLoading";
+import type { ResetPasswordInterface } from "../../api/auth/auth.interface";
 
 const { Title } = Typography;
 
-export default function ResetPassword() {
-    const { loading, start, stop } = useLoading("reset-password");
-  const navigate = useNavigate();
-  const [params] = useSearchParams();
-  const token = params.get("token");
-  const location = useLocation();
-  const { resetToken } = location.state;
+interface ResetPasswordFormValues {
+  password: string;
+  confirmPassword: string;
+}
 
-  const onFinish = async (values: any) => {
+interface ResetPasswordLocationState {
+  resetToken?: string;
+}
+
+export default function ResetPassword() {
+  const { loading, start, stop } = useLoading("reset-password");
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { resetToken } = (location.state ?? {}) as ResetPasswordLocationState;
+
+  if (!resetToken) {
+    return <Navigate to="/forgot-password" replace />;
+  }
+
+  const onFinish = async (values: ResetPasswordFormValues) => {
     try {
       start();
-      console.log({ token, ...values });
-      const payload = {
+      const payload: ResetPasswordInterface = {
         resetToken,
         newPass: values.password,
         confirmPass: values.confirmPassword,
@@ -27,7 +38,7 @@ export default function ResetPassword() {
       await authApi.resetApi(payload);
       message.success("Password reset successfully!");
       navigate("/sign-in");
-    } catch (err) {
+    } catch {
       message.error("Reset failed!");
     } finally {
       stop();

@@ -1,21 +1,34 @@
 import { Button, Form, Input, Typography, message } from "antd";
 import { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import { authApi } from "../../api/auth/auth.api";
+import type { AuthVerificationType, VerifyInterface } from "../../api/auth/auth.interface";
 
 const { Title, Text } = Typography;
+
+interface VerifyOtpFormValues {
+  otp: string;
+}
+
+interface VerifyOtpLocationState {
+  email?: string;
+  type?: AuthVerificationType;
+}
 
 export default function VerifyOtp() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
-  const { email, type } = location.state;
+  const { email, type } = (location.state ?? {}) as VerifyOtpLocationState;
 
-  const onFinish = async (values: any) => {
+  if (!email || !type) {
+    return <Navigate to="/forgot-password" replace />;
+  }
+
+  const onFinish = async (values: VerifyOtpFormValues) => {
     try {
       setLoading(true);
-      console.log("OTP:", values.otp);
-      const payload = {
+      const payload: VerifyInterface = {
         email,
         code: values.otp,
         type,
@@ -30,7 +43,7 @@ export default function VerifyOtp() {
       } else {
         navigate("/sign-in");
       }
-    } catch (err) {
+    } catch {
       message.error("Invalid OTP!");
     } finally {
       setLoading(false);
@@ -81,7 +94,7 @@ export default function VerifyOtp() {
           </Form.Item>
 
           <Text className="signin-subtitle">
-            Didn’t get code? <a>Resend</a>
+            Didn’t get code? <Link to="/forgot-password">Resend</Link>
           </Text>
         </Form>
       </div>

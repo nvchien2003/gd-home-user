@@ -1,6 +1,6 @@
 import React from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
-import { useAuth } from '../../provider/AuthProvider';
+import { useAuth } from '../../provider/auth.context';
 import { Footer } from './Footer';
 import HeaderBar from './Header';
 
@@ -10,7 +10,7 @@ export default function MainLayout() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const isAuthPage = ['/login', '/signup', '/forgot-password'].includes(location.pathname);
+  const isAuthPage = ['/sign-in', '/sign-up', '/forgot-password', '/verify-otp', '/reset-password'].includes(location.pathname);
   const isMessagePage = location.pathname.startsWith('/chat');
 
   if (isAuthPage) {
@@ -19,7 +19,7 @@ export default function MainLayout() {
 
   const handleLogout = () => {
     logout();
-    navigate('/');
+    navigate('/sign-in');
     setIsMenuOpen(false);
   };
 

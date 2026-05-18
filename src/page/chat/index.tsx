@@ -1,7 +1,17 @@
 
 import { useState } from 'react';
 import { Search, Send, MoreVertical, Phone, Video } from 'lucide-react';
-export const MESSAGES = [
+
+interface MessagePreview {
+  id: number;
+  user: string;
+  lastMessage: string;
+  time: string;
+  unread: boolean;
+  avatar: string;
+}
+
+const MESSAGES: MessagePreview[] = [
   { id: 1, user: "Sarah Jenkins", lastMessage: "Is the villa available for next weekend?", time: "2h ago", unread: true, avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" },
   { id: 2, user: "Michael Chen", lastMessage: "Great, thanks for the info!", time: "1d ago", unread: false, avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" },
   { id: 3, user: "Support", lastMessage: "Your booking #12345 has been confirmed.", time: "3d ago", unread: false, avatar: "https://images.unsplash.com/photo-1599566150163-29194dcaad36?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" },

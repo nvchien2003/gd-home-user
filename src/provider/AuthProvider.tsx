@@ -1,26 +1,9 @@
-import { createContext, useContext, useState } from "react";
+import { useState } from "react";
 import type { User } from "../api/user/user.interface";
 import type { ResponseInterface } from "../common/interface/abstracts.interface";
-import {
-  type RefetchOptions,
-  type QueryObserverResult,
-  useQueryClient,
-  useQuery,
-} from "@tanstack/react-query";
+import { useQueryClient, useQuery } from "@tanstack/react-query";
 import { authApi } from "../api/auth/auth.api";
-
-interface AuthContextType {
-  user: User | null;
-  token: string | null;
-  login: (token: string, user: User) => void;
-  logout: () => void;
-  isAuthenticated: boolean;
-  refetch: (
-    options?: RefetchOptions
-  ) => Promise<QueryObserverResult<ResponseInterface<User>, Error>>;
-}
-
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+import { AuthContext } from "./auth.context";
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const queryClient = useQueryClient();
@@ -53,11 +36,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const logout = () => {
     localStorage.removeItem("token");
     setToken(null);
-
-    // 🔥 clear cache
     queryClient.removeQueries({ queryKey: ["me"] });
-
-    window.location.href = "/sign-in";
   };
 
   return (
@@ -74,13 +53,4 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       {children}
     </AuthContext.Provider>
   );
-};
-
-// eslint-disable-next-line react-refresh/only-export-components
-export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error("useAuth must be used within an AuthProvider");
-  }
-  return context;
 };

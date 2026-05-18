@@ -163,7 +163,7 @@ export default function Home() {
                 We handle the booking process so you don't have to.
               </p>
             </div>
-            <Link to="/signup" className="bg-white text-indigo-600 hover:bg-gray-50 font-bold py-4 px-8 rounded-xl shadow-lg transition-transform hover:-translate-y-1 whitespace-nowrap">
+            <Link to="/sign-up" className="bg-white text-indigo-600 hover:bg-gray-50 font-bold py-4 px-8 rounded-xl shadow-lg transition-transform hover:-translate-y-1 whitespace-nowrap">
               Become a Host
             </Link>
           </div>

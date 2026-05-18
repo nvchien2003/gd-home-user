@@ -1,6 +1,6 @@
 import { Button, Form, Typography, message } from 'antd';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import CustomInput from '../../component/Input';
 import type { SignUpInterface } from '../../api/auth/auth.interface';
 import { authApi } from '../../api/auth/auth.api';
@@ -11,10 +11,9 @@ export default function SignUp() {
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
-    const onFinish = async (values: any) => {
+    const onFinish = async (values: SignUpInterface) => {
         try {
             setLoading(true);
-            console.log(values);
             const payload: SignUpInterface = {
                 firstName: values.firstName,
                 lastName: values.lastName,
@@ -29,7 +28,7 @@ export default function SignUp() {
                     type: res.type,
                 },
             });
-        } catch (err) {
+        } catch {
             message.error('Register failed!');
         } finally {
             setLoading(false);
@@ -97,7 +96,7 @@ export default function SignUp() {
                 </Form>
 
                 <Text className="signin-subtitle">
-                    Already have an account? <a href="/sign-in">Sign In</a>
+                    Already have an account? <Link to="/sign-in">Sign In</Link>
                 </Text>
             </div>
         </div>

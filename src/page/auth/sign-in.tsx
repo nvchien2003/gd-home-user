@@ -1,10 +1,11 @@
 import { Button, Form, Checkbox, Typography, message } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { authApi } from '../../api/auth/auth.api';
-import { useAuth } from '../../provider/AuthProvider';
+import { useAuth } from '../../provider/auth.context';
 import CustomInput from '../../component/Input';
 import { useLoading } from '../../hook/useLoading';
+import type { LoginInterface } from '../../api/auth/auth.interface';
 
 const { Title, Text } = Typography;
 
@@ -13,14 +14,14 @@ export default function SignIn() {
   const { login } = useAuth();
   const { loading, start, stop } = useLoading("sign-in");
 
-  const onFinish = async (values: any) => {
+  const onFinish = async (values: LoginInterface) => {
     try {
       start();
       const res = await authApi.loginApi(values);
       login(res.data.accessToken, res.data.user);
       message.success('Login successfully!');
       navigate('/');
-    } catch (err) {
+    } catch {
       message.error('Login failed!');
     } finally {
       stop();
@@ -75,7 +76,7 @@ export default function SignIn() {
                 <Checkbox>Remember me</Checkbox>
               </Form.Item>
 
-              <a href="/forgot-password">Forgot password?</a>
+              <Link to="/forgot-password">Forgot password?</Link>
             </div>
           </Form.Item>
 
@@ -93,7 +94,7 @@ export default function SignIn() {
         </Form>
 
         <Text className="signin-subtitle">
-          Don’t have an account? <a href="/sign-up">Sign Up</a>
+          Don’t have an account? <Link to="/sign-up">Sign Up</Link>
         </Text>
       </div>
     </div>

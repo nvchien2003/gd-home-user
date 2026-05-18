@@ -6,6 +6,5 @@ export interface MediasInterface extends AbstractInterface {
   url: string;
   type: number;
   status: number;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  attributes: any;
+  attributes: Record<string, unknown> | null;
 }

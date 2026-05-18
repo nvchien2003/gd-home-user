@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import PropertyCard from "../../../component/card";
-import { PROPERTIES } from "../../explore";
+import { PROPERTIES } from "../../../data/properties";
 
 export default function DashboardOverview() {
   return (
@@ -34,7 +34,7 @@ export default function DashboardOverview() {
       <div>
          <div className="flex justify-between items-center mb-4">
            <h2 className="text-xl font-bold text-gray-900">Recent Favorites</h2>
-           <Link to="favorites" className="text-indigo-600 text-sm font-medium hover:text-indigo-700">View all</Link>
+           <Link to="/favorites" className="text-indigo-600 text-sm font-medium hover:text-indigo-700">View all</Link>
          </div>
          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
            {PROPERTIES.slice(0, 2).map(property => (

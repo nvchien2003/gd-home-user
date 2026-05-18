@@ -1,5 +1,5 @@
 import { Camera } from "lucide-react";
-import { useAuth } from "../../provider/AuthProvider";
+import { useAuth } from "../../provider/auth.context";
 import { Form, Spin, Upload, notification } from "antd";
 import type { UploadProps } from "antd";
 import { usePreview } from "../../hook/medias.hook";
@@ -42,7 +42,7 @@ export default function ProfilePage() {
       phone: user?.phone,
       location: user?.location,
     })
-  }, [user])
+  }, [form, user])
 
   const handleSave = async () => {
     try {
@@ -67,7 +67,7 @@ export default function ProfilePage() {
         message: "Profile updated successfully",
       });
 
-    } catch (error) {
+    } catch {
       notification.error({
         message: "Update profile failed",
       });

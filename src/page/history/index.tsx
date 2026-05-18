@@ -1,12 +1,18 @@
 
 
-import { NavLink, Outlet } from 'react-router-dom';
+import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { Heart, Home, MessageSquare, Settings, LogOut } from 'lucide-react';
-import { useAuth } from '../../provider/AuthProvider';
+import { useAuth } from '../../provider/auth.context';
 
 
 export default function HistoryPage() {
   const { user, logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate('/sign-in');
+  };
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -16,7 +22,7 @@ export default function HistoryPage() {
           <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
             <div className="p-6 border-b border-gray-100 flex flex-col items-center text-center">
               <div className="w-20 h-20 rounded-full bg-gray-200 mb-4 overflow-hidden">
-                <img src={user?.avatar} alt={user?.firstName} className="w-full h-full object-cover" />
+                <img src={user?.avatar ?? "/image/avatar.png"} alt={user?.firstName ?? "User avatar"} className="w-full h-full object-cover" />
               </div>
               <h3 className="font-bold text-gray-900">{user?.firstName}</h3>
               <p className="text-sm text-gray-500">{user?.firstName}</p>
@@ -60,7 +66,7 @@ export default function HistoryPage() {
                 Settings
               </NavLink>
               <button 
-                onClick={logout}
+                onClick={handleLogout}
                 className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-red-600 hover:bg-red-50 transition-colors text-left"
               >
                 <LogOut className="h-5 w-5" />

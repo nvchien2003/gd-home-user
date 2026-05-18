@@ -1,5 +1,5 @@
 import { CheckCircle, Clock } from "lucide-react";
-import { PROPERTIES } from "../../explore";
+import { PROPERTIES } from "../../../data/properties";
 
 export function Rentals() {
   return (

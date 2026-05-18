@@ -1,9 +1,10 @@
 import { Button, Form, Typography, message } from 'antd';
 import { MailOutlined } from '@ant-design/icons';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import CustomInput from '../../component/Input';
 import { authApi } from '../../api/auth/auth.api';
+import type { ForgotInterface } from '../../api/auth/auth.interface';
 
 const { Title, Text } = Typography;
 
@@ -11,12 +12,10 @@ export default function ForgotPassword() {
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
-    const onFinish = async (values: any) => {
+    const onFinish = async (values: ForgotInterface) => {
         try {
             setLoading(true);
-            console.log(values);
             const res = await authApi.forgotApi(values);
-            console.log('--------', res)
             message.success('Reset link sent to your email!');
             navigate("/verify-otp", {
                 state: {
@@ -24,7 +23,7 @@ export default function ForgotPassword() {
                     type: res.type,
                 }
             });
-        } catch (err) {
+        } catch {
             message.error('Failed to send reset email');
         } finally {
             setLoading(false);
@@ -69,7 +68,7 @@ export default function ForgotPassword() {
                 </Form>
 
                 <Text className="signin-subtitle">
-                    Back to <a href="/sign-in">Sign In</a>
+                    Back to <Link to="/sign-in">Sign In</Link>
                 </Text>
             </div>
         </div>

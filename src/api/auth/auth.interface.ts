@@ -1,3 +1,5 @@
+export type AuthVerificationType = 'RESET' | 'SIGN_UP';
+
 export interface LoginInterface {
     email: string;
     password: string;
@@ -13,7 +15,7 @@ export interface SignUpInterface {
 export interface VerifyInterface {
     email: string;
     code: string;
-    type: string;
+    type: AuthVerificationType;
 }
 
 export interface ForgotInterface {

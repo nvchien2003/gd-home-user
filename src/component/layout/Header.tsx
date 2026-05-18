@@ -23,8 +23,6 @@ export default function HeaderBar({
   const NAV_ITEMS = [
     { label: "Home", to: "/" },
     { label: "Explore", to: "/explore" },
-    { label: "About", to: "/about" },
-    { label: "Contact", to: "/contact" },
   ];
 
   const AUTH_DROPDOWN = [

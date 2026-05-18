@@ -1,8 +1,8 @@
 
 import { useParams } from 'react-router-dom';
 import { Star, MapPin, BedDouble, Bath, Square, Share2, Heart, Check, Shield } from 'lucide-react';
-import { PROPERTIES } from '..';
 import BookingWidget from '../../../component/booking';
+import { PROPERTIES } from '../../../data/properties';
 
 export default function PropertyDetailPage() {
   const { id } = useParams();

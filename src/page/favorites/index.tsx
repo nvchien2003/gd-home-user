@@ -1,5 +1,5 @@
 import PropertyCard from "../../component/card";
-import { PROPERTIES } from "../explore";
+import { PROPERTIES } from "../../data/properties";
 
 export function Favorites() {
   return (

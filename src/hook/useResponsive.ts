@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 
+const getIsMobile = () => window.innerWidth <= 768;
+
 export function useResponsive() {
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  const [isMobile, setIsMobile] = useState(getIsMobile);
 
   useEffect(() => {
     const onResize = () => {
-      setIsMobile(window.innerWidth <= 768);
+      setIsMobile(getIsMobile());
     };
 
     window.addEventListener("resize", onResize);
