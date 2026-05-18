@@ -1,6 +1,12 @@
 const { contextBridge, ipcRenderer } = require("electron");
 
+const invokeChannels = {
+  getVersion: "get-version",
+  getPlatform: "get-platform",
+};
+
 contextBridge.exposeInMainWorld("electronAPI", {
-  ping: () => "pong", // ❌ bỏ TS type ": string"
-  getVersion: () => ipcRenderer.invoke("get-version"),
+  ping: () => "pong",
+  getVersion: () => ipcRenderer.invoke(invokeChannels.getVersion),
+  getPlatform: () => ipcRenderer.invoke(invokeChannels.getPlatform),
 });

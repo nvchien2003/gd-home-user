@@ -2,16 +2,19 @@
   "name": "gd-home-user",
   "private": true,
   "version": "0.0.0",
+  "description": "GD Home desktop and web client",
+  "author": "GD Home",
   "type": "module",
   "main": "electron/main.cjs",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "tsc -b && tsc -p tsconfig.electron.json && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "electron:dev": "concurrently \"npm run dev\" \"wait-on http://localhost:5173 && electron .\"",
+    "electron:dev": "concurrently -k \"npm run dev\" \"wait-on http://127.0.0.1:5173 && electron .\"",
     "electron:start": "electron .",
-    "dist": "npm run build && electron-builder"
+    "electron:build": "npm run build && electron-builder",
+    "dist": "npm run electron:build"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.11.2",
@@ -56,13 +59,20 @@
   "build": {
     "appId": "com.gd.home.user",
     "productName": "GD Home",
+    "directories": {
+      "output": "release"
+    },
     "files": [
       "dist/**/*",
       "electron/**/*"
     ],
+    "asar": true,
     "win": {
-      "target": "nsis"
+      "target": "nsis",
+      "artifactName": "${productName}-${version}-Setup.${ext}",
+      "signAndEditExecutable": false,
+      "verifyUpdateCodeSignature": false
     },
-     "npmRebuild": false
+    "npmRebuild": false
   }
 }
