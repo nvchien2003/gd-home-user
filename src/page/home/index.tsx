@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Search, MapPin, ArrowRight } from 'lucide-react';
 import PropertyCard from '../../component/card';
@@ -10,10 +11,21 @@ export default function Home() {
   const navigate = useNavigate();
   const { data } = usePropertiesQuery({ page: 1, limit: 3 });
   const featuredProperties = data?.data ?? [];
+  const [location, setLocation] = useState('');
+  const [type, setType] = useState('');
+  const [priceRange, setPriceRange] = useState('');
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    navigate('/explore');
+    const params = new URLSearchParams({ page: '1' });
+    if (location) params.set('location', location);
+    if (type) params.set('type', type);
+    if (priceRange) {
+      const [minPrice, maxPrice] = priceRange.split('-');
+      if (minPrice) params.set('minPrice', minPrice);
+      if (maxPrice) params.set('maxPrice', maxPrice);
+    }
+    navigate(`/explore?${params.toString()}`);
   };
 
   return (
@@ -59,12 +71,14 @@ export default function Home() {
                 <MapPin className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
                 <input 
                   type="text" 
+                  value={location}
+                  onChange={(event) => setLocation(event.target.value)}
                   placeholder="Location" 
                   className="w-full pl-10 pr-4 py-2 bg-gray-50 border border-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-900 placeholder-gray-500"
                 />
               </div>
               <div className="relative">
-                <select className="w-full px-4 py-2 bg-gray-50 border border-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-900 appearance-none">
+                <select value={type} onChange={(event) => setType(event.target.value)} className="w-full px-4 py-2 bg-gray-50 border border-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-900 appearance-none">
                   <option value="">Property Type</option>
                   <option value="house">House</option>
                   <option value="apartment">Apartment</option>
@@ -76,12 +90,12 @@ export default function Home() {
                 </div>
               </div>
               <div className="relative">
-                <select className="w-full px-4 py-2 bg-gray-50 border border-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-900 appearance-none">
+                <select value={priceRange} onChange={(event) => setPriceRange(event.target.value)} className="w-full px-4 py-2 bg-gray-50 border border-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-900 appearance-none">
                   <option value="">Price Range</option>
                   <option value="0-1000">$0 - $1,000</option>
                   <option value="1000-3000">$1,000 - $3,000</option>
                   <option value="3000-5000">$3,000 - $5,000</option>
-                  <option value="5000+">$5,000+</option>
+                  <option value="5000">$5,000+</option>
                 </select>
                 <div className="absolute right-3 top-3 pointer-events-none">
                   <svg className="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
@@ -133,7 +147,7 @@ export default function Home() {
           
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {featuredProperties.map((property) => (
-              <Link to={`/explore?city=${property.location}`} key={property.id} className="relative group overflow-hidden rounded-2xl aspect-[3/4] cursor-pointer">
+              <Link to={`/explore?location=${encodeURIComponent(property.location)}`} key={property.id} className="relative group overflow-hidden rounded-2xl aspect-[3/4] cursor-pointer">
                 <img
                   src={property.image}
                   alt={property.location}

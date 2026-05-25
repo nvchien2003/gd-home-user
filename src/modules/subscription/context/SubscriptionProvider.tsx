@@ -22,8 +22,8 @@ const sessionKey = (userId?: string) =>
 
 const buildCheckoutPayload = () => ({
   planId: SUBSCRIPTION_PLAN_IDS.BASIC_CREATOR,
-  successUrl: `${window.location.origin}/history?subscription=success`,
-  cancelUrl: `${window.location.origin}/history?subscription=cancelled`,
+  successUrl: `${window.location.origin}/subscription/success?subscription=success`,
+  cancelUrl: `${window.location.origin}/subscription/cancel?subscription=cancelled`,
 });
 
 const hasCheckoutReturnParam = () => {
@@ -51,6 +51,7 @@ export function SubscriptionProvider({ children }: { children: ReactNode }) {
 
   const refreshSubscription = useCallback(async () => {
     await queryClient.invalidateQueries({ queryKey: queryKeys.subscription });
+    await queryClient.invalidateQueries({ queryKey: queryKeys.profile });
     await refetch();
   }, [queryClient, refetch]);
 
@@ -78,6 +79,12 @@ export function SubscriptionProvider({ children }: { children: ReactNode }) {
   }, [hasSubscription, isAuthenticated, loading, user?.id]);
 
   useEffect(() => {
+    if (hasSubscription) {
+      setModalOpen(false);
+    }
+  }, [hasSubscription]);
+
+  useEffect(() => {
     if (!isAuthenticated || !hasCheckoutReturnParam()) return;
 
     void refreshSubscription();
@@ -92,7 +99,10 @@ export function SubscriptionProvider({ children }: { children: ReactNode }) {
   const handleSubscribe = useCallback(async () => {
     try {
       const checkout = await checkoutMutation.mutateAsync(buildCheckoutPayload());
-      window.location.assign(checkout.checkoutUrl);
+      if (!checkout.checkoutUrl) {
+        throw new Error("Missing checkout URL");
+      }
+      window.location.href = checkout.checkoutUrl;
     } catch {
       message.error("Unable to start Stripe checkout. Please try again.");
     }

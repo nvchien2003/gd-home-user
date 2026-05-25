@@ -19,6 +19,8 @@ import ResetPassword from "../page/auth/reset-pass";
 import PrivateRoute from "./PrivateRouter";
 import SubscriptionRoute from "./SubscriptionRoute";
 import CreateRentalPage from "../page/create-rental";
+import SubscriptionSuccessPage from "../modules/subscription/pages/SubscriptionSuccessPage";
+import SubscriptionCancelPage from "../modules/subscription/pages/SubscriptionCancelPage";
 
 const router = createBrowserRouter([
     {
@@ -69,6 +71,14 @@ const router = createBrowserRouter([
                     {
                         path: '/rentals',
                         element: <Rentals />
+                    },
+                    {
+                        path: '/subscription/success',
+                        element: <SubscriptionSuccessPage />
+                    },
+                    {
+                        path: '/subscription/cancel',
+                        element: <SubscriptionCancelPage />
                     },
                     {
                         element: <SubscriptionRoute />,

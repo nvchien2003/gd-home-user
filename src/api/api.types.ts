@@ -21,6 +21,14 @@ export interface PaginationParams {
   page?: number;
   limit?: number;
   search?: string;
+  location?: string;
+  type?: string;
+  minPrice?: number;
+  maxPrice?: number;
+  beds?: number;
+  baths?: number;
+  sortBy?: string;
+  order?: "asc" | "desc";
   sort?: string;
 }
 
