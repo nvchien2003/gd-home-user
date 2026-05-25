@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Home, Menu, X, MessageSquare, Heart, Plus } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import type { User } from "../../api/user/user.interface";
+import { useSubscription } from "../../modules/subscription";
 
 interface HeaderBarProps {
   user: User | null;
@@ -19,6 +20,15 @@ export default function HeaderBar({
   setIsMenuOpen,
   handleLogout,
 }: HeaderBarProps) {
+  const { hasSubscription, openSubscriptionModal } = useSubscription();
+
+  const handleCreateClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    if (!isAuthenticated || hasSubscription) return;
+    event.preventDefault();
+    setIsMenuOpen(false);
+    openSubscriptionModal();
+  };
+
   /* ================= CONFIG ================= */
   const NAV_ITEMS = [
     { label: "Home", to: "/" },
@@ -71,10 +81,11 @@ export default function HeaderBar({
 
           {/* Desktop Auth */}
           <div className="hidden md:flex items-center gap-4">
-            {true ? (
+            {isAuthenticated ? (
               <div className="flex items-center gap-4">
                 <Link
                   to="/create-rental"
+                  onClick={handleCreateClick}
                   className="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg font-medium transition-colors"
                 >
                   <Plus className="h-4 w-4" />
@@ -193,7 +204,7 @@ export default function HeaderBar({
                     <Link
                       key={item.label}
                       to={item.to}
-                      onClick={() => setIsMenuOpen(false)}
+                      onClick={item.to === "/create-rental" ? handleCreateClick : () => setIsMenuOpen(false)}
                       className="block px-3 py-2 rounded-md font-medium hover:bg-gray-50"
                     >
                       {item.label}

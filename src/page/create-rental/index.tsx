@@ -4,13 +4,13 @@ import { Home, MapPin, Phone, Tag } from "lucide-react";
 import { useAuth } from "../../provider/auth.context";
 import { usePreview } from "../../hook/medias.hook";
 import { useLoading } from "../../hook/useLoading";
-import { RentalPostApi } from "../../api/rental-post/rental-post.api";
 import type {
   CreateRentalPostPayload,
   RoomType,
 } from "../../api/rental-post/rental-post.interface";
 import AmenitiesSelect from "./components/AmenitiesSelect";
 import RentalImageUpload from "./components/RentalImageUpload";
+import { useCreateRentalPostMutation } from "../../hook/api.hooks";
 
 interface CreateRentalFormValues {
   title: string;
@@ -38,7 +38,8 @@ export default function CreateRentalPage() {
   const navigate = useNavigate();
   const { user } = useAuth();
   const { loading, start, stop } = useLoading("create-rental");
-  const { filePreview, onChangeFiles, onRemoveFile, onUpload } = usePreview(6, "rental");
+  const { filePreview, onChangeFiles, onRemoveFile, onUpload, uploadProgress } = usePreview(6, "rental");
+  const createRentalPost = useCreateRentalPostMutation();
 
   const handleSubmit = async (values: CreateRentalFormValues) => {
     if (!filePreview.length) {
@@ -59,7 +60,7 @@ export default function CreateRentalPage() {
         images,
       };
 
-      await RentalPostApi.createRentalPost(payload);
+      await createRentalPost.mutateAsync(payload);
       message.success("Rental post created successfully");
       navigate("/history");
     } catch {
@@ -226,6 +227,7 @@ export default function CreateRentalPage() {
               filePreview={filePreview}
               onChangeFiles={onChangeFiles}
               onRemoveFile={onRemoveFile}
+              uploadProgress={uploadProgress}
             />
 
             <Button

@@ -18,7 +18,7 @@ export default function SignIn() {
     try {
       start();
       const res = await authApi.loginApi(values);
-      login(res.data.accessToken, res.data.user);
+      login(res.accessToken, res.user);
       message.success('Login successfully!');
       navigate('/');
     } catch {

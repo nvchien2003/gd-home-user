@@ -1,11 +1,14 @@
 
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 
-export default function BookingWidget({ price }: { price: number }) {
+export default function BookingWidget({ price, propertyId }: { price: number; propertyId?: string | number }) {
   const navigate = useNavigate();
+  const [startDate, setStartDate] = useState("");
+  const [durationMonths, setDurationMonths] = useState(1);
 
   const handleBook = () => {
-    navigate('/booking');
+    navigate('/booking', { state: { propertyId, price, startDate, durationMonths } });
   };
 
   return (
@@ -19,15 +22,15 @@ export default function BookingWidget({ price }: { price: number }) {
         <div className="border border-gray-200 rounded-lg overflow-hidden">
           <div className="p-3 border-b border-gray-200">
              <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Check-in</label>
-             <input type="date" className="w-full text-sm text-gray-600 outline-none" />
+             <input type="date" value={startDate} onChange={(event) => setStartDate(event.target.value)} className="w-full text-sm text-gray-600 outline-none" />
           </div>
           <div className="p-3">
              <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Duration</label>
-             <select className="w-full text-sm text-gray-600 outline-none bg-transparent">
-               <option>1 Month</option>
-               <option>3 Months</option>
-               <option>6 Months</option>
-               <option>12 Months</option>
+             <select value={durationMonths} onChange={(event) => setDurationMonths(Number(event.target.value))} className="w-full text-sm text-gray-600 outline-none bg-transparent">
+               <option value={1}>1 Month</option>
+               <option value={3}>3 Months</option>
+               <option value={6}>6 Months</option>
+               <option value={12}>12 Months</option>
              </select>
           </div>
         </div>

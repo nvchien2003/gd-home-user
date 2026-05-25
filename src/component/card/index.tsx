@@ -3,10 +3,12 @@
 import { Link } from 'react-router-dom';
 import { Heart, Star, MapPin, BedDouble, Bath, Square } from 'lucide-react';
 import { motion } from 'motion/react';
+import { useToggleFavoriteMutation } from '../../hook/api.hooks';
+import type { MouseEvent } from 'react';
 
 interface PropertyCardProps {
   property: {
-    id: number;
+    id: string | number;
     title: string;
     location: string;
     price: number;
@@ -19,9 +21,18 @@ interface PropertyCardProps {
     reviews: number;
     image: string;
   };
+  isFavorite?: boolean;
 }
 
-export default function PropertyCard({ property }: PropertyCardProps) {
+export default function PropertyCard({ property, isFavorite = false }: PropertyCardProps) {
+  const toggleFavorite = useToggleFavoriteMutation();
+
+  const handleFavorite = (event: MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
+    toggleFavorite.mutate({ propertyId: property.id, favorite: !isFavorite });
+  };
+
   return (
     <motion.div 
       initial={{ opacity: 0, y: 20 }}
@@ -37,8 +48,8 @@ export default function PropertyCard({ property }: PropertyCardProps) {
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
         />
         <div className="absolute top-3 right-3">
-          <button className="p-2 bg-white/90 backdrop-blur-sm rounded-full text-gray-400 hover:text-red-500 hover:bg-white transition-colors shadow-sm">
-            <Heart className="h-4 w-4" />
+          <button onClick={handleFavorite} className="p-2 bg-white/90 backdrop-blur-sm rounded-full text-gray-400 hover:text-red-500 hover:bg-white transition-colors shadow-sm">
+            <Heart className={`h-4 w-4 ${isFavorite ? "text-red-500 fill-red-500" : ""}`} />
           </button>
         </div>
         <div className="absolute bottom-3 left-3">

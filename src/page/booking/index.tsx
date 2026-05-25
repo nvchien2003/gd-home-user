@@ -1,10 +1,33 @@
 
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Check, CreditCard, Star } from 'lucide-react';
 import { useState } from 'react';
+import { message } from 'antd';
+import { useCreateBookingMutation, usePropertyDetailQuery } from '../../hook/api.hooks';
 
 export default function BookingPage() {
   const [step, setStep] = useState(1);
+  const [bookingMessage, setBookingMessage] = useState("");
+  const location = useLocation();
+  const state = location.state as { propertyId?: string | number; price?: number; startDate?: string; durationMonths?: number } | null;
+  const propertyId = state?.propertyId;
+  const { data: property } = usePropertyDetailQuery(propertyId);
+  const createBooking = useCreateBookingMutation();
+  const price = property?.pricePerMonth ?? state?.price ?? 0;
+
+  const handleConfirm = async () => {
+    try {
+      await createBooking.mutateAsync({
+        propertyId,
+        startDate: state?.startDate,
+        durationMonths: state?.durationMonths ?? 1,
+        message: bookingMessage,
+      });
+      setStep(3);
+    } catch {
+      message.error("Booking failed. Please try again.");
+    }
+  };
 
   if (step === 3) {
     return (
@@ -54,7 +77,7 @@ export default function BookingPage() {
               <div className="flex justify-between items-start py-4 border-b border-gray-100">
                 <div>
                   <h3 className="font-medium text-gray-900 mb-1">Dates</h3>
-                  <p className="text-gray-500 text-sm">Oct 12 - Nov 12, 2024</p>
+                  <p className="text-gray-500 text-sm">{state?.startDate || "Select a date"} • {state?.durationMonths ?? 1} month</p>
                 </div>
                 <button className="text-indigo-600 font-medium text-sm underline">Edit</button>
               </div>
@@ -72,6 +95,8 @@ export default function BookingPage() {
                 <textarea 
                   className="w-full p-4 border border-gray-200 rounded-lg h-32 resize-none focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   placeholder="Introduce yourself and tell the owner why you're interested in their property..."
+                  value={bookingMessage}
+                  onChange={(event) => setBookingMessage(event.target.value)}
                 ></textarea>
               </div>
 
@@ -114,10 +139,10 @@ export default function BookingPage() {
               </div>
 
               <button 
-                onClick={() => setStep(3)}
+                onClick={handleConfirm}
                 className="w-full py-3 bg-indigo-600 text-white font-bold rounded-lg hover:bg-indigo-700 transition-colors"
               >
-                Confirm and Pay
+                {createBooking.isPending ? "Confirming..." : "Confirm and Pay"}
               </button>
               <button 
                 onClick={() => setStep(1)}
@@ -133,21 +158,21 @@ export default function BookingPage() {
         <div className="lg:col-span-1">
           <div className="bg-white p-6 rounded-xl border border-gray-100 shadow-lg sticky top-8">
              <div className="flex gap-4 mb-6">
-               <img src="https://images.unsplash.com/photo-1600596542815-27b5f0450635?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="Thumbnail" className="w-24 h-24 object-cover rounded-lg" />
+               <img src={property?.image ?? "/image/avatar.png"} alt="Thumbnail" className="w-24 h-24 object-cover rounded-lg" />
                <div>
-                 <p className="text-xs text-gray-500 uppercase font-bold tracking-wide">Villa</p>
-                 <h3 className="font-bold text-gray-900 mb-1">Modern Minimalist Villa</h3>
+                 <p className="text-xs text-gray-500 uppercase font-bold tracking-wide">{property?.type ?? "Property"}</p>
+                 <h3 className="font-bold text-gray-900 mb-1">{property?.title ?? "Selected property"}</h3>
                  <div className="flex items-center gap-1 text-xs text-gray-500">
                    <Star className="h-3 w-3 text-yellow-400 fill-yellow-400" />
-                   <span>4.8 (24 reviews)</span>
+                   <span>{property?.rating ?? 0} ({property?.reviews ?? 0} reviews)</span>
                  </div>
                </div>
              </div>
              
              <div className="border-t border-gray-100 pt-4 space-y-3">
                <div className="flex justify-between text-gray-600 text-sm">
-                 <span className="underline">$12,000 x 1 month</span>
-                 <span>$12,000</span>
+                 <span className="underline">${price.toLocaleString()} x 1 month</span>
+                 <span>${price.toLocaleString()}</span>
                </div>
                <div className="flex justify-between text-gray-600 text-sm">
                  <span className="underline">Cleaning fee</span>
@@ -161,7 +186,7 @@ export default function BookingPage() {
              
              <div className="border-t border-gray-100 pt-4 mt-4 flex justify-between font-bold text-gray-900 text-lg">
                <span>Total (USD)</span>
-               <span>$12,350</span>
+               <span>${(price + 350).toLocaleString()}</span>
              </div>
           </div>
         </div>

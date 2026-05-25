@@ -34,7 +34,6 @@ export default function ResetPassword() {
         newPass: values.password,
         confirmPass: values.confirmPassword,
       }
-      // TODO: call api reset password
       await authApi.resetApi(payload);
       message.success("Password reset successfully!");
       navigate("/sign-in");

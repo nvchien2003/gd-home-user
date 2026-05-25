@@ -7,12 +7,14 @@ interface RentalImageUploadProps {
   filePreview: FileUpload[];
   onChangeFiles: UploadProps["onChange"];
   onRemoveFile: (id: string) => void;
+  uploadProgress?: number;
 }
 
 export default function RentalImageUpload({
   filePreview,
   onChangeFiles,
   onRemoveFile,
+  uploadProgress,
 }: RentalImageUploadProps) {
   const uploadProps: UploadProps = {
     showUploadList: false,
@@ -65,6 +67,11 @@ export default function RentalImageUpload({
               </button>
             </div>
           ))}
+        </div>
+      )}
+      {Boolean(uploadProgress) && (uploadProgress ?? 0) < 100 && (
+        <div className="mt-3 h-2 bg-gray-100 rounded-full overflow-hidden">
+          <div className="h-full bg-indigo-600 transition-all" style={{ width: `${uploadProgress ?? 0}%` }} />
         </div>
       )}
     </Form.Item>

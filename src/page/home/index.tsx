@@ -2,11 +2,14 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Search, MapPin, ArrowRight } from 'lucide-react';
-// import PropertyCard from '../components/PropertyCard';
+import PropertyCard from '../../component/card';
 import { motion } from 'motion/react';
+import { usePropertiesQuery } from '../../hook/api.hooks';
 
 export default function Home() {
   const navigate = useNavigate();
+  const { data } = usePropertiesQuery({ page: 1, limit: 3 });
+  const featuredProperties = data?.data ?? [];
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -110,9 +113,9 @@ export default function Home() {
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {/* {PROPERTIES.slice(0, 3).map((property, index) => (
+          {featuredProperties.map((property) => (
             <PropertyCard key={property.id} property={property} />
-          ))} */}
+          ))}
         </div>
         
         <div className="mt-8 text-center md:hidden">
@@ -129,20 +132,20 @@ export default function Home() {
           <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">Popular Cities</h2>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {/* {CITIES.map((city) => (
-              <Link to={`/explore?city=${city.name}`} key={city.name} className="relative group overflow-hidden rounded-2xl aspect-[3/4] cursor-pointer">
-                <img 
-                  src={city.image} 
-                  alt={city.name} 
+            {featuredProperties.map((property) => (
+              <Link to={`/explore?city=${property.location}`} key={property.id} className="relative group overflow-hidden rounded-2xl aspect-[3/4] cursor-pointer">
+                <img
+                  src={property.image}
+                  alt={property.location}
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
                 <div className="absolute bottom-6 left-6 text-white">
-                  <h3 className="text-xl font-bold">{city.name}</h3>
-                  <p className="text-sm text-gray-200">{city.count} properties</p>
+                  <h3 className="text-xl font-bold">{property.location}</h3>
+                  <p className="text-sm text-gray-200">{property.type}</p>
                 </div>
               </Link>
-            ))} */}
+            ))}
           </div>
         </div>
       </section>

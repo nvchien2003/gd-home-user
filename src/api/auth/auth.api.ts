@@ -15,7 +15,7 @@ export const authApi = {
 
     verifyOtp: async (payload: VerifyInterface) => {
         const response = await axiosClient.post('/auth/verify', payload);
-        return response.data;
+        return response.data.data;
     },
 
     forgotApi: async (payload: ForgotInterface) => {
@@ -25,7 +25,7 @@ export const authApi = {
 
     resetApi: async (payload: ResetPasswordInterface) => {
         const response = await axiosClient.post('/auth/reset-password', payload);
-        return response.data;
+        return response.data.data;
     },
 
     getProfile: async() => {

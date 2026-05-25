@@ -2,11 +2,19 @@
 import { useParams } from 'react-router-dom';
 import { Star, MapPin, BedDouble, Bath, Square, Share2, Heart, Check, Shield } from 'lucide-react';
 import BookingWidget from '../../../component/booking';
-import { PROPERTIES } from '../../../data/properties';
+import { usePropertyDetailQuery } from '../../../hook/api.hooks';
 
 export default function PropertyDetailPage() {
   const { id } = useParams();
-  const property = PROPERTIES.find(p => p.id === Number(id)) || PROPERTIES[0];
+  const { data: property, isLoading, isError } = usePropertyDetailQuery(id);
+
+  if (isLoading) {
+    return <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-gray-500">Loading property...</div>;
+  }
+
+  if (isError || !property) {
+    return <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-red-500">Unable to load property.</div>;
+  }
 
   return (
     <div className="bg-white pb-16">
@@ -46,16 +54,16 @@ export default function PropertyDetailPage() {
              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors"></div>
            </div>
            <div className="col-span-1 row-span-1 relative group cursor-pointer">
-             <img src="https://images.unsplash.com/photo-1484154218962-a1c002085d2f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Detail 1" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+             <img src={property.images[1] ?? property.image} alt="Detail 1" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
            </div>
            <div className="col-span-1 row-span-1 relative group cursor-pointer">
-             <img src="https://images.unsplash.com/photo-1556912173-3db996ea0661?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Detail 2" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+             <img src={property.images[2] ?? property.image} alt="Detail 2" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
            </div>
            <div className="col-span-1 row-span-1 relative group cursor-pointer">
-             <img src="https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Detail 3" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+             <img src={property.images[3] ?? property.image} alt="Detail 3" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
            </div>
            <div className="col-span-1 row-span-1 relative group cursor-pointer">
-             <img src="https://images.unsplash.com/photo-1505691938895-1758d7feb511?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Detail 4" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+             <img src={property.images[4] ?? property.image} alt="Detail 4" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
              <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                 <span className="text-white font-bold text-lg">View all photos</span>
              </div>
@@ -142,7 +150,7 @@ export default function PropertyDetailPage() {
 
           {/* Right Column (Booking Widget) */}
           <div className="lg:col-span-1">
-             <BookingWidget price={property.pricePerMonth} />
+             <BookingWidget price={property.pricePerMonth} propertyId={property.id} />
           </div>
         </div>
       </div>

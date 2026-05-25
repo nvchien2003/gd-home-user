@@ -15,6 +15,7 @@ export type FileUpload = { preview: string; file: File; id: string; uid: string 
 
 export const usePreview = (limit = 1, uploadType = 'avatar') => {
     const [filePreview, setFilePreview] = useState<FileUpload[]>([]);
+    const [uploadProgress, setUploadProgress] = useState(0);
 
     const onChangeFiles: UploadProps['onChange'] = async ({ fileList }) => {
         if (!fileList) return;
@@ -58,7 +59,11 @@ export const usePreview = (limit = 1, uploadType = 'avatar') => {
             fileUpload.forEach((file) => {
                 formDataUpload.append('file', file.file);
             });
-            const response = await MediaApi.fileUpload(formDataUpload);
+            setUploadProgress(0);
+            const response = await MediaApi.fileUpload(formDataUpload, (event) => {
+                if (!event.total) return;
+                setUploadProgress(Math.round((event.loaded * 100) / event.total));
+            });
 
             return response;
         }
@@ -70,5 +75,6 @@ export const usePreview = (limit = 1, uploadType = 'avatar') => {
         onChangeFiles,
         onRemoveFile,
         onUpload,
+        uploadProgress,
     };
 };

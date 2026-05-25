@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import { Search, Map, Grid } from 'lucide-react';
 import PropertyCard from '../../component/card';
-import { PROPERTIES } from '../../data/properties';
+import { usePropertiesQuery } from '../../hook/api.hooks';
 
 export default function ExplorePage() {
   const [viewMode, setViewMode] = useState<'grid' | 'map'>('grid');
+  const { data, isLoading, isError } = usePropertiesQuery({ page: 1, limit: 12 });
+  const properties = data?.data ?? [];
 
   return (
     <div className="bg-gray-50 min-h-screen pb-12">
@@ -59,11 +61,11 @@ export default function ExplorePage() {
 
              {viewMode === 'grid' ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-                  {PROPERTIES.map((property) => (
+                  {isLoading && <p className="text-gray-500">Loading properties...</p>}
+                  {isError && <p className="text-red-500">Unable to load properties.</p>}
+                  {!isLoading && !isError && properties.length === 0 && <p className="text-gray-500">No properties found.</p>}
+                  {properties.map((property) => (
                     <PropertyCard key={property.id} property={property} />
-                  ))}
-                  {PROPERTIES.map((property) => (
-                    <PropertyCard key={`dup-${property.id}`} property={{ ...property, id: Number(`99${property.id}`) }} />
                   ))}
                 </div>
              ) : (
@@ -80,8 +82,8 @@ export default function ExplorePage() {
                  <nav className="flex items-center gap-1">
                    <button className="px-4 py-2 border border-gray-300 rounded-lg text-gray-500 hover:bg-gray-50 disabled:opacity-50">Previous</button>
                    <button className="w-10 h-10 flex items-center justify-center bg-indigo-600 text-white rounded-lg font-medium">1</button>
-                   <button className="w-10 h-10 flex items-center justify-center text-gray-700 hover:bg-gray-100 rounded-lg font-medium">2</button>
-                   <button className="w-10 h-10 flex items-center justify-center text-gray-700 hover:bg-gray-100 rounded-lg font-medium">3</button>
+                   {(data?.meta?.totalPages ?? 0) > 1 && <button className="w-10 h-10 flex items-center justify-center text-gray-700 hover:bg-gray-100 rounded-lg font-medium">2</button>}
+                   {(data?.meta?.totalPages ?? 0) > 2 && <button className="w-10 h-10 flex items-center justify-center text-gray-700 hover:bg-gray-100 rounded-lg font-medium">3</button>}
                    <span className="px-2 text-gray-400">...</span>
                    <button className="px-4 py-2 border border-gray-300 rounded-lg text-gray-500 hover:bg-gray-50">Next</button>
                  </nav>

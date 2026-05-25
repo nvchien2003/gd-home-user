@@ -76,6 +76,10 @@ const router = createBrowserRouter([
                             {
                                 path: '/create-rental',
                                 element: <CreateRentalPage />
+                            },
+                            {
+                                path: '/create-post',
+                                element: <CreateRentalPage />
                             }
                         ]
                     }

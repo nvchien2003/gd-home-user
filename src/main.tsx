@@ -8,6 +8,8 @@ import { AuthProvider } from './provider/AuthProvider'
 import { Provider } from 'react-redux'
 import { store } from './store'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import RealtimeEvents from './component/realtime/RealtimeEvents'
+import { SubscriptionProvider } from './modules/subscription'
 
 const queryClient = new QueryClient({
     defaultOptions: {
@@ -23,11 +25,13 @@ createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
-        <Provider store={store}>
-          <AppRouter />
-        </Provider>
+        <SubscriptionProvider>
+          <RealtimeEvents />
+          <Provider store={store}>
+            <AppRouter />
+          </Provider>
+        </SubscriptionProvider>
       </AuthProvider>
     </QueryClientProvider>
   </React.StrictMode>,
 )
-
