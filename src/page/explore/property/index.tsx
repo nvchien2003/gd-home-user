@@ -62,13 +62,9 @@ export default function PropertyDetailPage() {
     );
   }
 
-  /**
-   * TODO:
-   * sau này nên lấy lat/lng từ API
-   */
   const position: [number, number] = [
-    property.latitude || 10.8231,
-    property.longitude || 106.6297,
+    property.latitude,
+    property.longitude,
   ];
 
   return (

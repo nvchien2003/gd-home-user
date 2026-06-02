@@ -32,6 +32,10 @@ export interface ApiProperty {
   rating?: number;
   reviews?: number;
   reviewCount?: number;
+  latitude?: number | string;
+  longitude?: number | string;
+  lat?: number | string;
+  lng?: number | string;
   image?: string;
   thumbnail?: string;
   images?: Array<string | { url?: string }>;
@@ -53,6 +57,8 @@ export interface Property {
   type: string;
   rating: number;
   reviews: number;
+  latitude: number;
+  longitude: number;
   image: string;
   images: string[];
   amenities: string[];

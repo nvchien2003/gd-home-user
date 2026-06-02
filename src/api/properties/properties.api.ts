@@ -4,6 +4,8 @@ import { unwrapData, unwrapPaginated } from "../api.types";
 import type { ApiProperty, Property, PropertyListResult } from "./properties.interface";
 
 const fallbackImage = "/image/avatar.png";
+const fallbackLatitude = 10.8231;
+const fallbackLongitude = 106.6297;
 
 const imageUrl = (value: string | { url?: string } | undefined) =>
   typeof value === "string" ? value : value?.url;
@@ -11,6 +13,8 @@ const imageUrl = (value: string | { url?: string } | undefined) =>
 export const normalizeProperty = (property: ApiProperty): Property => {
   const images = (property.images ?? []).map(imageUrl).filter((url): url is string => Boolean(url));
   const owner = property.owner ?? property.user;
+  const latitude = Number(property.latitude ?? property.lat ?? fallbackLatitude);
+  const longitude = Number(property.longitude ?? property.lng ?? fallbackLongitude);
   const ownerName =
     owner?.name ??
     [owner?.firstName, owner?.lastName].filter(Boolean).join(" ") ??
@@ -29,6 +33,8 @@ export const normalizeProperty = (property: ApiProperty): Property => {
     type: property.type ?? property.roomType ?? "Property",
     rating: Number(property.rating ?? 0),
     reviews: Number(property.reviews ?? property.reviewCount ?? 0),
+    latitude: Number.isFinite(latitude) ? latitude : fallbackLatitude,
+    longitude: Number.isFinite(longitude) ? longitude : fallbackLongitude,
     image: property.image ?? property.thumbnail ?? images[0] ?? fallbackImage,
     images,
     amenities: property.amenities ?? [],
