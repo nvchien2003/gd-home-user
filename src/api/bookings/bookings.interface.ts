@@ -30,6 +30,8 @@ export interface Booking {
 export interface CreateBookingPayload {
   propertyId?: string | number;
   startDate?: string;
+  endDate?: string;
   durationMonths?: number;
   message?: string;
+  paymentIntentId?: string;
 }

@@ -17,7 +17,10 @@ export const FavoritesApi = {
   },
 
   addFavorite: async (propertyId: string | number) => {
-    const response = await axiosClient.post("/favorites", { propertyId });
+    const response = await axiosClient.post(
+      `/favorites/${propertyId}`
+    );
+
     return response.data;
   },
 
